@@ -17,9 +17,15 @@ import torch.nn.functional as F
 from arff2pandas import a2p
 from data_preprocessing import val_df, test_df, train_df
 
+
+
 def create_dataset(df):
     sequences = df.astype(np.float32).to_numpy().tolist()
+    sequences = list(map(list, zip(*sequences)))
+
     dataset = [torch.tensor(s).unsqueeze(1).float() for s in sequences]
+    print(dataset)
+
     n_seq, seq_len, n_features = torch.stack(dataset).shape
     return dataset, seq_len, n_features
 
@@ -27,6 +33,9 @@ def create_dataset(df):
     train_dataset, seq_len, n_features = create_dataset(train_df)
 
 train_dataset, seq_len, n_features = create_dataset(train_df)
+
+print(train_dataset)
+
 val_dataset, _, _ = create_dataset(val_df)
 test_normal_dataset, _, _ = create_dataset(test_df)
 
@@ -128,9 +137,7 @@ def train_model(model, train_dataset, val_dataset, n_epochs):
     print("epoch", epoch)
     model = model.train()
 
-
     train_losses = []
-    print(len(train_dataset))
     for seq_true in train_dataset:
       optimizer.zero_grad()
 
