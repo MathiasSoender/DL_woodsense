@@ -22,9 +22,6 @@ df = pd.read_csv(cwd+'/data/sensor1.csv',infer_datetime_format=True, parse_dates
 print(df.isnull().sum())
 # This shows that we have a lot of null values. ^
 
-#Filling out null values with values from the closest previous time
-df = df.astype('float32')
-
 #Forward will all NaN values with previous existing values
 df.fillna(method='ffill', inplace=True)
 
