@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
 
 from plotting import plot_time_series_class
 
@@ -28,8 +29,23 @@ df.fillna(method='ffill', inplace=True)
 print(df.isnull().sum())
 #^This shows us that we have one attribute where all values are Nan. Apart from this, is looks like it worked.
 
+
+#################################################
+# Scaling attributes to be between -1 and 1
+
+
+scalers={}
+for i in df.columns:
+    scaler = MinMaxScaler(feature_range=(-1,1))
+    s_s = scaler.fit_transform(df[i].values.reshape(-1,1))
+    s_s=np.reshape(s_s,len(s_s))
+    scalers['scaler_'+ i] = scaler
+    df[i]=s_s
+
 print(df.head())
 
+
+    
 #################################################
 
 #shuffle the elements
