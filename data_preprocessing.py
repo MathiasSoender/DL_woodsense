@@ -71,7 +71,7 @@ print(df.head())
 #Splitting the data in to training, validation and test
 train_df, val_df = train_test_split(
   df,
-  test_size=0.80,
+  test_size=0.85,
   random_state=RANDOM_SEED
 )
 val_df, test_df = train_test_split(

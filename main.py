@@ -24,21 +24,22 @@ def create_dataset(df):
     sequences = list(map(list, zip(*sequences)))
 
     dataset = [torch.tensor(s).unsqueeze(1).float() for s in sequences]
-    print(dataset)
 
-    n_seq, seq_len, n_features = torch.stack(dataset).shape
+
+    n_features, seq_len, n_seq = torch.stack(dataset).shape
+    print(n_seq)
     return dataset, seq_len, n_features
-
-
-    train_dataset, seq_len, n_features = create_dataset(train_df)
 
 train_dataset, seq_len, n_features = create_dataset(train_df)
 
-print(train_dataset)
+print(len(train_dataset[0]),seq_len,n_features)
+
 
 val_dataset, _, _ = create_dataset(val_df)
+print(len(val_dataset[0]))
 test_normal_dataset, _, _ = create_dataset(test_df)
 
+print(len(test_normal_dataset[0]))
 class Encoder(nn.Module):
 
   def __init__(self, seq_len, n_features, embedding_dim=64):
@@ -62,6 +63,7 @@ class Encoder(nn.Module):
     )
 
   def forward(self, x):
+
     x = x.reshape((1, self.seq_len, self.n_features))
 
     x, (_, _) = self.rnn1(x)
